@@ -1,6 +1,7 @@
 image: java:8-jdk
 
 stages:
+  - build
   - test
 
 before_script:
@@ -10,6 +11,11 @@ cache:
   paths:
     - .gradle/wrapper
     - .gradle/caches
+
+lint:
+  stage: build
+  script:
+    - ./gradlew ktlintCheck
 
 testJvm:
   stage: test

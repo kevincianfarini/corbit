@@ -14,6 +14,7 @@ kotlin {
     *  https://kotlinlang.org/docs/reference/building-mpp-with-gradle.html#setting-up-targets */
 
     jvm()
+    linuxX64("linux")
 
     sourceSets {
 
@@ -38,6 +39,10 @@ kotlin {
             dependencies {
                 implementation(kotlin("test-junit"))
             }
+        }
+
+        val linuxMain by getting {
+            dependencies { }
         }
     }
 }

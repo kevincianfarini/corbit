@@ -1,0 +1,26 @@
+image: java:8-jdk
+
+stages:
+  - test
+
+before_script:
+  - export GRADLE_USER_HOME=`pwd`/.gradle
+
+cache:
+  paths:
+    - .gradle/wrapper
+    - .gradle/caches
+
+testJvm:
+  stage: test
+  script:
+    - ./gradlew jvmTest
+  only:
+    - master
+
+testLinux:
+  stage: test
+  script:
+    - ./gradlew linuxTest
+  only:
+    - master

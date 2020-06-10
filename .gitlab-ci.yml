@@ -16,6 +16,9 @@ lint:
   stage: build
   script:
     - ./gradlew ktlintCheck
+  only:
+    - master
+    - merge_requests
 
 testJvm:
   stage: test
@@ -23,6 +26,7 @@ testJvm:
     - ./gradlew jvmTest
   only:
     - master
+    - merge_requests
 
 testLinux:
   stage: test
@@ -30,3 +34,4 @@ testLinux:
     - ./gradlew linuxTest
   only:
     - master
+    - merge_requests

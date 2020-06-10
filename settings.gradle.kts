@@ -9,3 +9,4 @@
 
 rootProject.name = "corbit"
 include("corbit-bencoding")
+include("corbit-binary")

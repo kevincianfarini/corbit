@@ -14,6 +14,11 @@ kotlin {
     linuxX64("linux")
 
     sourceSets {
+
+        all {
+            languageSettings.useExperimentalAnnotation("kotlin.ExperimentalStdlibApi")
+        }
+
         val commonMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-common"))

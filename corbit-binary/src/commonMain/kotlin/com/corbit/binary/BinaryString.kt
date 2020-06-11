@@ -96,7 +96,7 @@ abstract class BinaryString : Iterable<Byte> {
      *
      * This calculation is lazy and will be cached after the first access to this property.
      */
-    val utf8: String by lazy { TODO() }
+    open val utf8: String by lazy { toByteArray().decodeToString() }
 
     /**
      * Calculate the MD5 hash of this [BinaryString].
@@ -169,6 +169,11 @@ abstract class BinaryString : Iterable<Byte> {
     companion object {
 
         /**
+         * An empty [BinaryString]
+         */
+        val EMPTY = byteArrayOf().asBinaryString(false)
+
+        /**
          * Decode the value represented by [hex] into a [BinaryString].
          */
         fun fromHexString(hex: String): BinaryString {
@@ -179,7 +184,7 @@ abstract class BinaryString : Iterable<Byte> {
                 }
 
                 ((HEX_DIGIT_CHARS.indexOf(first) shl 4) or HEX_DIGIT_CHARS.indexOf(second)).toByte()
-            }.toByteArray().asBinary()
+            }.toByteArray().asBinaryString()
         }
 
         /**
@@ -234,7 +239,7 @@ abstract class BinaryString : Iterable<Byte> {
                 }
             }
 
-            return array.asBinary(defensiveCopy = false)
+            return array.asBinaryString(defensiveCopy = false)
         }
     }
 }
@@ -243,11 +248,13 @@ abstract class BinaryString : Iterable<Byte> {
  * A [BinaryString] wrapper for a [ByteArray]. In order to ensure immutability, [ByteArrayBinaryString] has the ability
  * to perform a defensive copy.
  */
-internal class ByteArrayBinaryString internal constructor(data: ByteArray, defensiveCopy: Boolean) : BinaryString() {
+internal class ByteArrayBinaryString(data: ByteArray, defensiveCopy: Boolean) : BinaryString() {
 
     private val data = if (defensiveCopy) data.copyOf() else data
 
     override val size = data.size
+
+    override val utf8: String by lazy { this.data.decodeToString() }
 
     override fun get(index: Int): Byte = data[index]
 
@@ -276,7 +283,12 @@ internal class ByteArrayBinaryString internal constructor(data: ByteArray, defen
  * Note: Utility functions that are cached like [BinaryString.hex] are not guaranteed to be correct if a
  * defensive copy is not used and the underlying resource is mutated.
  */
-fun ByteArray.asBinary(defensiveCopy: Boolean = true): BinaryString = ByteArrayBinaryString(this, defensiveCopy)
+fun ByteArray.asBinaryString(defensiveCopy: Boolean = true): BinaryString = ByteArrayBinaryString(this, defensiveCopy)
+
+/**
+ * Get a copy of the underlying data in this [String] as a [BinaryString]
+ */
+fun String.asBinaryString(): BinaryString = encodeToByteArray().asBinaryString(false)
 
 /**
  * A subset view into [this] where index 0 correspends to [startIndex] and the last index corresponds to

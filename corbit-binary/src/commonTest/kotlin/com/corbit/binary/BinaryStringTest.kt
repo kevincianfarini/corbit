@@ -7,16 +7,15 @@ import kotlin.test.assertFalse
 import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 
-@ExperimentalStdlibApi
-class BinaryTest {
+class BinaryStringTest {
 
     @Test fun `creating array binary performs defensive copy`() {
         // arrange
         val originalData = "Hello".encodeToByteArray()
-        val first = originalData.asBinary(defensiveCopy = true)
+        val first = originalData.asBinaryString(defensiveCopy = true)
 
         // act
-        val second = originalData.apply { set(0, 'B'.toByte()) }.asBinary()
+        val second = originalData.apply { set(0, 'B'.toByte()) }.asBinaryString()
 
         // assert
         assertNotEquals(first, second)
@@ -25,10 +24,10 @@ class BinaryTest {
     @Test fun `creating a binary array without defensive copy is not immutable`() {
         // arrange
         val originalData = "Hello".encodeToByteArray()
-        val first = originalData.asBinary(defensiveCopy = false)
+        val first = originalData.asBinaryString(defensiveCopy = false)
 
         // act
-        val second = originalData.apply { set(0, 'B'.toByte()) }.asBinary()
+        val second = originalData.apply { set(0, 'B'.toByte()) }.asBinaryString()
 
         // assert
         assertEquals(first, second)
@@ -36,7 +35,7 @@ class BinaryTest {
 
     @Test fun `array binary gets the proper byte of data`() {
         // arrange
-        val data = "Hello".encodeToByteArray().asBinary()
+        val data = "Hello".encodeToByteArray().asBinaryString()
 
         // act
         val result = data[4]
@@ -47,7 +46,7 @@ class BinaryTest {
 
     @Test fun `array binary contains byte`() {
         // arrange
-        val data = "Hello".encodeToByteArray().asBinary()
+        val data = "Hello".encodeToByteArray().asBinaryString()
 
         // act
         val result = 'o'.toByte() in data
@@ -58,7 +57,7 @@ class BinaryTest {
 
     @Test fun `array binary is proper size`() {
         // arrange
-        val data = "Hello".encodeToByteArray().asBinary()
+        val data = "Hello".encodeToByteArray().asBinaryString()
 
         // act
         val result = data.size
@@ -69,8 +68,8 @@ class BinaryTest {
 
     @Test fun `array binary is equal to another array binary`() {
         // arrange
-        val first = "Hello".encodeToByteArray().asBinary()
-        val second = "Hello".encodeToByteArray().asBinary()
+        val first = "Hello".encodeToByteArray().asBinaryString()
+        val second = "Hello".encodeToByteArray().asBinaryString()
 
         // assert
         assertEquals(first, second)
@@ -78,7 +77,7 @@ class BinaryTest {
 
     @Test fun `binary slice with identical content is equal to array binary`() {
         // arrange
-        val first = "Hello".encodeToByteArray().asBinary()
+        val first = "Hello".encodeToByteArray().asBinaryString()
 
         // act
         val second = first.slice()
@@ -89,7 +88,7 @@ class BinaryTest {
 
     @Test fun `binary slice must not have negative start index`() {
         // arrange
-        val first = "Hello".encodeToByteArray().asBinary()
+        val first = "Hello".encodeToByteArray().asBinaryString()
 
         // assert
         assertFailsWith(IllegalArgumentException::class) {
@@ -100,7 +99,7 @@ class BinaryTest {
 
     @Test fun `binary slice endIndex must be greater than startIndex`() {
         // arrange
-        val first = "Hello".encodeToByteArray().asBinary()
+        val first = "Hello".encodeToByteArray().asBinaryString()
 
         // assert
         assertFailsWith(IllegalArgumentException::class) {
@@ -111,7 +110,7 @@ class BinaryTest {
 
     @Test fun `binary slice endIndex cannot exceed last index of source`() {
         // arrange
-        val first = "Hello".encodeToByteArray().asBinary()
+        val first = "Hello".encodeToByteArray().asBinaryString()
 
         // assert
         assertFailsWith(IllegalArgumentException::class) {
@@ -122,18 +121,18 @@ class BinaryTest {
 
     @Test fun `binary slice get operator maps to proper index`() {
         // arrange
-        val first = "Hello".encodeToByteArray().asBinary()
+        val first = "Hello".encodeToByteArray().asBinaryString()
 
         // act
         val second = first.slice(1, 3)
 
         // assert
-        assertEquals("ell".encodeToByteArray().asBinary(), second)
+        assertEquals("ell".encodeToByteArray().asBinaryString(), second)
     }
 
     @Test fun `binary slice contains byte`() {
         // arrange
-        val data = "Hello".encodeToByteArray().asBinary().slice().slice(1, 3)
+        val data = "Hello".encodeToByteArray().asBinaryString().slice().slice(1, 3)
 
         // act
         val result = 'e'.toByte() in data
@@ -144,7 +143,7 @@ class BinaryTest {
 
     @Test fun `binary slice does not contain byte`() {
         // arrange
-        val data = "Hello".encodeToByteArray().asBinary().slice().slice(1, 3)
+        val data = "Hello".encodeToByteArray().asBinaryString().slice().slice(1, 3)
 
         // act
         val result = 'H'.toByte() in data
@@ -155,7 +154,7 @@ class BinaryTest {
 
     @Test fun `chunking binary produces binaries of equal size`() {
         // arrange
-        val data = "Foo Bar Baz Bax".encodeToByteArray().asBinary()
+        val data = "Foo Bar Baz Bax".encodeToByteArray().asBinaryString()
 
         // act
         val result = data.chunked(size = 3)
@@ -168,10 +167,10 @@ class BinaryTest {
     @Test fun `chunking aligned binary produces binaries with correct data`() {
         // arrange
         val data = "Foo Bar Baz Bax"
-        val expected = data.chunked(size = 3).map { it.encodeToByteArray().asBinary() }
+        val expected = data.chunked(size = 3).map { it.encodeToByteArray().asBinaryString() }
 
         // act
-        val result = data.encodeToByteArray().asBinary().chunked(size = 3)
+        val result = data.encodeToByteArray().asBinaryString().chunked(size = 3)
 
         // assert
         assertEquals(expected, result)
@@ -179,7 +178,7 @@ class BinaryTest {
 
     @Test fun `chunking unaligned binary produces smaller component in last result index`() {
         // arrange
-        val data = "Foo Bar Baz Bax".encodeToByteArray().asBinary()
+        val data = "Foo Bar Baz Bax".encodeToByteArray().asBinaryString()
 
         // act
         val result = data.chunked(size = 4)
@@ -191,10 +190,10 @@ class BinaryTest {
     @Test fun `chunking unaligned binary produces correct data`() {
         // arrange
         val data = "Foo Bar Baz Bax"
-        val expected = data.chunked(size = 4).map { it.encodeToByteArray().asBinary() }
+        val expected = data.chunked(size = 4).map { it.encodeToByteArray().asBinaryString() }
 
         // act
-        val result = data.encodeToByteArray().asBinary().chunked(size = 4)
+        val result = data.encodeToByteArray().asBinaryString().chunked(size = 4)
 
         // assert
         assertEquals(expected, result)
@@ -202,7 +201,7 @@ class BinaryTest {
 
     @Test fun `getting byte array from array binary has correct data`() {
         // arrange
-        val arrayBinary = "Hello".encodeToByteArray().asBinary()
+        val arrayBinary = "Hello".encodeToByteArray().asBinaryString()
 
         // act
         val result = arrayBinary.toByteArray()
@@ -213,7 +212,7 @@ class BinaryTest {
 
     @Test fun `getting byte array from slice binary has correct data`() {
         // arrange
-        val arrayBinary = "Hello".encodeToByteArray().asBinary().slice()
+        val arrayBinary = "Hello".encodeToByteArray().asBinaryString().slice()
 
         // act
         val result = arrayBinary.toByteArray()
@@ -224,7 +223,7 @@ class BinaryTest {
 
     @Test fun `encoding binary value as hex prodices string of correct size`() {
         // arrange
-        val binary = "Hello".encodeToByteArray().asBinary()
+        val binary = "Hello".encodeToByteArray().asBinaryString()
 
         // act
         val result = binary.hex
@@ -235,7 +234,7 @@ class BinaryTest {
 
     @Test fun `encoding binary value as hex produces the right string`() {
         // arrange
-        val binary = "Hello".encodeToByteArray().asBinary()
+        val binary = "Hello".encodeToByteArray().asBinaryString()
 
         // act
         val result = binary.hex
@@ -274,7 +273,7 @@ class BinaryTest {
         val binary = BinaryString.fromHexString(hexString)
 
         // assert
-        assertEquals(byteArrayOf(-54, -2, -70, -66).asBinary(), binary)
+        assertEquals(byteArrayOf(-54, -2, -70, -66).asBinaryString(), binary)
     }
 
     @Test fun `decoding valid uppercase hex string produces binary with correct value`() {
@@ -285,12 +284,12 @@ class BinaryTest {
         val binary = BinaryString.fromHexString(hexString)
 
         // assert
-        assertEquals(byteArrayOf(-54, -2, -70, -66).asBinary(), binary)
+        assertEquals(byteArrayOf(-54, -2, -70, -66).asBinaryString(), binary)
     }
 
     @Test fun `encoding empty binary as base64 produces correct value`() {
         // arrange
-        val binary = byteArrayOf().asBinary()
+        val binary = byteArrayOf().asBinaryString()
 
         // act
         val result = binary.base64
@@ -301,7 +300,7 @@ class BinaryTest {
 
     @Test fun `encoding non-empty binary value as base64 produces correct value`() {
         // arrange
-        val binary = "Hello, I am a developer.".encodeToByteArray().asBinary()
+        val binary = "Hello, I am a developer.".encodeToByteArray().asBinaryString()
 
         // act
         val result = binary.base64
@@ -312,7 +311,7 @@ class BinaryTest {
 
     @Test fun `encoding size 18 binary has no padding`() {
         // arrange
-        val binary = "The quick blue fox".encodeToByteArray().asBinary()
+        val binary = "The quick blue fox".encodeToByteArray().asBinaryString()
 
         // act
         val result = binary.base64
@@ -323,7 +322,7 @@ class BinaryTest {
 
     @Test fun `encoding size 19 binary has 2 padding characters`() {
         // arrange
-        val binary = "The quick brown fox".encodeToByteArray().asBinary()
+        val binary = "The quick brown fox".encodeToByteArray().asBinaryString()
 
         // act
         val result = binary.base64
@@ -334,7 +333,7 @@ class BinaryTest {
 
     @Test fun `encoding size 20 binary has 1 padding character`() {
         // arrange
-        val binary = "The quick orange fox".encodeToByteArray().asBinary()
+        val binary = "The quick orange fox".encodeToByteArray().asBinaryString()
 
         // act
         val result = binary.base64
@@ -347,7 +346,7 @@ class BinaryTest {
         // arrange
         val binary = "This is kotlinx-io, a first class Kotlin library for low level input/output interactions."
             .encodeToByteArray()
-            .asBinary()
+            .asBinaryString()
 
         // act
         val result = binary.base64
@@ -389,7 +388,7 @@ class BinaryTest {
         val result = BinaryString.fromBase64(base64)
 
         // assert
-        assertEquals(byteArrayOf().asBinary(), result)
+        assertEquals(byteArrayOf().asBinaryString(), result)
     }
 
     @Test fun `decoding unpadded base64 string produces correct binary`() {
@@ -400,7 +399,7 @@ class BinaryTest {
         val result = BinaryString.fromBase64(base64)
 
         // assert
-        assertEquals("The quick blue fox".encodeToByteArray().asBinary(), result)
+        assertEquals("The quick blue fox".encodeToByteArray().asBinaryString(), result)
     }
 
     @Test fun `decoding single padded base64 string produces correct binary`() {
@@ -411,7 +410,7 @@ class BinaryTest {
         val result = BinaryString.fromBase64(base64)
 
         // assert
-        assertEquals("The quick orange fox".encodeToByteArray().asBinary(), result)
+        assertEquals("The quick orange fox".encodeToByteArray().asBinaryString(), result)
     }
 
     @Test fun `decoding double padded base64 string produces correct binary`() {
@@ -422,7 +421,7 @@ class BinaryTest {
         val result = BinaryString.fromBase64(base64)
 
         // assert
-        assertEquals(("The quick brown fox").encodeToByteArray().asBinary(), result)
+        assertEquals(("The quick brown fox").encodeToByteArray().asBinaryString(), result)
     }
 
     @Test fun `decoding non-trivial data produces correct binary`() {
@@ -436,7 +435,7 @@ class BinaryTest {
         assertEquals(
             "This is kotlinx-io, a first class Kotlin library for low level input/output interactions."
                 .encodeToByteArray()
-                .asBinary(),
+                .asBinaryString(),
             result
         )
     }

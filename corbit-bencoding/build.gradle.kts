@@ -2,25 +2,27 @@ plugins {
     kotlin("multiplatform")
 }
 
+group = "com.corbit"
 version = "unspecified"
 
 repositories {
-    mavenCentral()
+    jcenter()
 }
 
 kotlin {
-    /* Targets configuration omitted. 
-    *  To find out how to configure the targets, please follow the link:
-    *  https://kotlinlang.org/docs/reference/building-mpp-with-gradle.html#setting-up-targets */
-
     jvm()
     linuxX64("linux")
 
     sourceSets {
 
+        all {
+            languageSettings.useExperimentalAnnotation("kotlin.ExperimentalStdlibApi")
+        }
+
         val commonMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-common"))
+                implementation(project(":corbit-binary"))
             }
         }
         val commonTest by getting {

@@ -21,11 +21,3 @@ class BinaryStringBuilder internal constructor() {
 
     fun build(): BinaryString = bytes.toByteArray().asBinaryString(false)
 }
-
-/**
- * Exposes access to a [BinaryStringBuilder] which is then converted to a [BinaryString]
- * after [builder] has completed.
- */
-fun buildBinaryString(builder: BinaryStringBuilder.() -> Unit): BinaryString {
-    return BinaryStringBuilder().apply(builder).build()
-}

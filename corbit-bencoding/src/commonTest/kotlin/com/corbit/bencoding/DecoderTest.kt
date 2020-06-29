@@ -1,6 +1,7 @@
 package com.corbit.bencoding
 
 import com.corbit.binary.asBinaryString
+import com.ionspin.kotlin.bignum.integer.toBigInteger
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -14,7 +15,7 @@ class DecoderTest {
         val result = data.decode()
 
         // assert
-        assertEquals(123, (result as BencodedInt).value)
+        assertEquals(123.toBigInteger(), (result as BencodedInt).value)
     }
 
     @Test fun `simple bencoded string can be decoded`() {
@@ -79,9 +80,9 @@ class DecoderTest {
 
         // assert
         val expected = listOf(
-            BencodedInt(123),
+            BencodedInt(123.toBigInteger()),
             BencodedString("spam".asBinaryString()),
-            BencodedInt(12),
+            BencodedInt(12.toBigInteger()),
             BencodedString("eggs".asBinaryString())
         )
         assertEquals(
@@ -100,8 +101,8 @@ class DecoderTest {
         // assert
         assertEquals(
             BencodedList(listOf(
-                BencodedList(listOf(BencodedInt(123))),
-                BencodedList(listOf(BencodedInt(123)))
+                BencodedList(listOf(BencodedInt(123.toBigInteger()))),
+                BencodedList(listOf(BencodedInt(123.toBigInteger())))
             )),
             result
         )

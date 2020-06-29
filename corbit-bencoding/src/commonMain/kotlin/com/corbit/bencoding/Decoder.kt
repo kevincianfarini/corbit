@@ -2,6 +2,8 @@ package com.corbit.bencoding
 
 import com.corbit.binary.BinaryString
 import com.corbit.binary.slice
+import com.ionspin.kotlin.bignum.integer.BigInteger
+import com.ionspin.kotlin.bignum.integer.toBigInteger
 
 internal class Decoder(private val source: BinaryString) {
 
@@ -34,8 +36,8 @@ internal class Decoder(private val source: BinaryString) {
     }
 
     private fun decodeInteger(): BencodedInt {
-        val value: Long = readToNextToken(BencoderToken.END).run {
-            slice(1, size - 2).utf8.toLong()
+        val value: BigInteger = readToNextToken(BencoderToken.END).run {
+            slice(1, size - 2).utf8.toBigInteger()
         }
 
         return BencodedInt(value)

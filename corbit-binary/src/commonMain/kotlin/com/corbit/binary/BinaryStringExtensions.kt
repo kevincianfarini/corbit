@@ -1,7 +1,5 @@
 package com.corbit.binary
 
-import com.corbit.binary.internal.BASE_64_DIGIT_CHARS
-import com.corbit.binary.internal.HEX_DIGIT_CHARS
 import kotlin.math.min
 
 /**
@@ -54,69 +52,4 @@ fun BinaryString.chunked(size: Int): List<BinaryString> {
     }
 
     return result
-}
-
-/**
- * Encode this [BinaryString] as a [Base64](http://www.ietf.org/rfc/rfc2045.txt) text.
- * This implementation omits newline delimiters.
- */
-internal fun BinaryString.encodeToBase64(): String {
-    val chars = CharArray(size = (size + 2) / 3 * 4)
-    var index = 0
-
-    // grab in increments of 3 bytes for 24 bits total.
-    for (binary in chunked(size = 3)) {
-        when (binary.size) {
-            3 -> {
-                val first = binary[0].toInt() shl 16
-                val second = binary[1].toInt() shl 8
-                val third = binary[2].toInt()
-
-                val accumulator = first + second + third
-
-                chars[index++] = BASE_64_DIGIT_CHARS[(accumulator shr 18) and 0x3f]
-                chars[index++] = BASE_64_DIGIT_CHARS[(accumulator shr 12) and 0x3f]
-                chars[index++] = BASE_64_DIGIT_CHARS[(accumulator shr 6) and 0x3f]
-                chars[index++] = BASE_64_DIGIT_CHARS[accumulator and 0x3f]
-            }
-            2 -> {
-                val first = binary[0].toInt() shl 8
-                val second = binary[1].toInt()
-
-                val accumulator = (first + second) shl 2 // align to 18 bits
-
-                chars[index++] = BASE_64_DIGIT_CHARS[(accumulator shr 12) and 0x3f]
-                chars[index++] = BASE_64_DIGIT_CHARS[(accumulator shr 6) and 0x3f]
-                chars[index++] = BASE_64_DIGIT_CHARS[accumulator and 0x3f]
-                chars[index++] = '='
-            }
-            1 -> {
-                val first = binary[0].toInt()
-
-                val accumulator = first shl 4 // align to 12 bits
-
-                chars[index++] = BASE_64_DIGIT_CHARS[(accumulator shr 6) and 0x3f]
-                chars[index++] = BASE_64_DIGIT_CHARS[accumulator and 0x3f]
-                chars[index++] = '='
-                chars[index++] = '='
-            }
-        }
-    }
-
-    return String(chars)
-}
-
-/**
- * This [BinaryString] encoded as a hexidecimal string.
- */
-internal fun BinaryString.encodeHex(): String {
-    val array = CharArray(size * 2)
-
-    var index = 0
-    for (byte in this) {
-        array[index++] = HEX_DIGIT_CHARS[(byte.toInt() shr 4) and 0xf]
-        array[index++] = HEX_DIGIT_CHARS[byte.toInt() and 0xf]
-    }
-
-    return String(array)
 }

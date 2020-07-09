@@ -424,7 +424,7 @@ class BinaryStringTest {
         assertEquals(("The quick brown fox").encodeToByteArray().asBinaryString(), result)
     }
 
-    @Test fun `decoding non-trivial data produces correct binary`() {
+    @Test fun `decoding non-trivial base64 data produces correct binary`() {
         // arrange
         val base64 = "VGhpcyBpcyBrb3RsaW54LWlvLCBhIGZpcnN0IGNsYXNzIEtvdGxpbiBsaWJyYXJ5IGZvciBsb3cgbGV2ZWwgaW5wdXQvb3V0cHV0IGludGVyYWN0aW9ucy4="
 
@@ -438,5 +438,53 @@ class BinaryStringTest {
                 .asBinaryString(),
             result
         )
+    }
+
+    @Test fun `SHA-1 hash of empty value gives correct digest`() {
+        // arrange
+        val data = "".asBinaryString()
+
+        // act
+        val result = data.sha1
+
+        // assert
+        assertEquals("da39a3ee5e6b4b0d3255bfef95601890afd80709", result.hex)
+    }
+
+    @Test fun `SHA-1 has of simple value gives correct digest`() {
+        // arrange
+        val data = "Kevin".asBinaryString()
+
+        // act
+        val result = data.sha1
+
+        // assert
+        assertEquals("e043899daa0c7add37bc99792b2c045d6abbc6dc", result.hex)
+    }
+
+    @Test fun `SHA-1 hash of exactly 64 bytes gives correct digest`() {
+        // arrange
+        val data = buildBinaryString {
+            for (i in 0 until 64) {
+                append("i")
+            }
+        }
+
+        // act
+        val result = data.sha1
+
+        // assert
+        assertEquals("79c64455d4565a82bc3f4ec5d9a5e8443c2e77b3", result.hex)
+    }
+
+    @Test fun `SHA-1 hash of non-trivial value gives correct digest`() {
+        // arrange
+        val data = "The quick brown fox jumps over the lazy dog".asBinaryString()
+
+        // act
+        val result = data.sha1
+
+        // assert
+        assertEquals("2fd4e1c67a2d28fced849ee1bb76e7391b93eb12", result.hex)
     }
 }

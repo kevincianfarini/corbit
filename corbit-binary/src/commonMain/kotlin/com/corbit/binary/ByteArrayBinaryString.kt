@@ -14,10 +14,6 @@ internal class ByteArrayBinaryString(data: ByteArray, defensiveCopy: Boolean) : 
 
     override fun get(index: Int): Byte = data[index]
 
-    override fun contains(byte: Byte): Boolean = byte in data
-
-    override fun toByteArray(): ByteArray = data.copyOf()
-
     override fun equals(other: Any?): Boolean = when (other) {
         is ByteArrayBinaryString -> other.data.contentEquals(data)
         else -> super.equals(other)

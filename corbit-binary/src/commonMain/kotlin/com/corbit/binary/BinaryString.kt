@@ -2,6 +2,9 @@ package com.corbit.binary
 
 import com.corbit.binary.internal.decodeBase64
 import com.corbit.binary.internal.decodeHex
+import com.corbit.binary.internal.encodeHex
+import com.corbit.binary.internal.encodeToBase64
+import com.corbit.binary.internal.sha1HashDigest
 
 /**
  * An immutable sequence of bytes that can be read multiple times.
@@ -45,11 +48,11 @@ abstract class BinaryString : Iterable<Byte> {
     val md5: String by lazy { TODO() }
 
     /**
-     * Calculate the SHA1 hash of this [BinaryString].
+     * Calculate the SHA-1 hash of this [BinaryString].
      *
      * This calculation is lazy and will be cached after the first access to this property.
      */
-    val sha1: String by lazy { TODO() }
+    val sha1: BinaryString by lazy { sha1HashDigest() }
 
     val sha256: String by lazy { TODO() }
 
@@ -62,14 +65,9 @@ abstract class BinaryString : Iterable<Byte> {
     abstract operator fun get(index: Int): Byte
 
     /**
-     * Checks if [byte] is contained in this [BinaryString]
-     */
-    abstract operator fun contains(byte: Byte): Boolean
-
-    /**
      * Returns a [ByteArray] containing a copy of the bytes contained within this [BinaryString]
      */
-    open fun toByteArray(): ByteArray = ByteArray(size) { get(it) }
+    fun toByteArray(): ByteArray = ByteArray(size) { get(it) }
 
     override fun iterator(): Iterator<Byte> = object : Iterator<Byte> {
 

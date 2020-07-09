@@ -17,6 +17,7 @@ kotlin {
 
         all {
             languageSettings.useExperimentalAnnotation("kotlin.ExperimentalStdlibApi")
+            languageSettings.useExperimentalAnnotation("kotlin.ExperimentalUnsignedTypes")
         }
 
         val commonMain by getting {

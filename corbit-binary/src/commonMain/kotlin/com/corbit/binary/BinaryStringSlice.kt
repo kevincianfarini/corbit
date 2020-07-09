@@ -23,12 +23,4 @@ internal class BinaryStringSlice(
 
         return source[index + startIndex]
     }
-
-    override fun contains(byte: Byte): Boolean {
-        for (currentByte in this) {
-            if (currentByte == byte) return true
-        }
-
-        return false
-    }
 }

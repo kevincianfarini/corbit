@@ -8,5 +8,5 @@ Corbit is a multipurpose, multiplatform implementation of the BitTorrent protoco
 | :-------------   | :---: | :----: | :---: | :---: | :----: |
 | corbit-binary    | ✓     | ✓      |       |       |        |
 | corbit-bencoding | ✓     | ✓      |       |       |        |
-| corbit-core      |       |        |       |       |        |
+| corbit-core      | ✓     |        |       |       |        |
 | corbit-cli       |       |        |       |       |        |

@@ -7,9 +7,6 @@ version = "unspecified"
 
 repositories {
     jcenter()
-    maven {
-        url = uri("https://oss.sonatype.org/content/repositories/snapshots") // TODO remove with Kotlin 1.4 release of BigNum
-    }
 }
 
 kotlin {
@@ -27,7 +24,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("stdlib-common"))
                 implementation(project(":corbit-binary"))
-                implementation("com.ionspin.kotlin:bignum:0.1.6-1.3.72-SNAPSHOT")
+                implementation("com.ionspin.kotlin:bignum:0.2.0")
             }
         }
         val commonTest by getting {

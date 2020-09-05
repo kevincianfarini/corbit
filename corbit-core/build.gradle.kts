@@ -12,6 +12,8 @@ repositories {
 kotlin {
     jvm()
 
+    jvm()
+
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -30,8 +32,8 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-jdk8"))
-                implementation("com.squareup.okio:okio:2.7.0")
-                implementation("com.squareup.okhttp3:okhttp:4.8.0")
+                implementation("com.squareup.okio:okio:2.8.0")
+                implementation("com.squareup.okhttp3:okhttp:4.8.1")
             }
         }
         val jvmTest by getting {
